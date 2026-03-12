@@ -201,3 +201,73 @@ MiroFish 的仿真引擎由 **[OASIS](https://github.com/camel-ai/oasis)** 驱�
    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=666ghj/MiroFish&type=date&legend=top-left" />
  </picture>
 </a>
+
+---
+
+## ⚡ Temporal Inversion Engine (ChaosEngine Fork)
+
+MiroFish predicts the future by simulating it **forward**.  
+This fork adds **Temporal Inversion** — attacking uncertainty from the **opposite direction**.
+
+```
+FORWARD (MiroFish):
+  Seed →→→→ uncertainty increasing →→→→ Predictions
+
+INVERTED (ChaosEngine):  
+  Preconditions ←←←← certainty increasing ←←←← Outcome
+
+TEMPORAL PINCER:
+  Forward →→→→→ ⚡ TURNSTILE ⚡ ←←←←← Inverted
+                  (convergence)
+```
+
+### How It Works
+
+1. MiroFish runs normally — generates forward predictions
+2. Inversion engine takes the prediction DAG and applies **Bayes' theorem** to reverse every edge:
+   - Forward: P(Effect | Cause) — from simulation  
+   - Inverted: P(Cause | Effect) — computed via Bayes
+3. **Shannon entropy** computed in both directions — gradient reveals the **Turnstile** (point of no return)
+4. **Temporal Pincer**: √(forward × inverted) = highest confidence prediction
+
+### What You Get (in 46ms, 0 LLM calls)
+
+| Analysis | Question Answered |
+|----------|------------------|
+| **Necessity** | "What HAD to be true for this outcome?" |
+| **Turnstile** | "When does the outcome become inevitable?" |
+| **Sensitivity** | "Which single factor changes the outcome most?" |
+| **Monte Carlo** | "How stable is this prediction?" (confidence intervals) |
+| **do-Calculus** | "If we FORCE this to change, what happens?" (intervention vs observation) |
+| **Markov Blanket** | "What's the minimum set to monitor?" (75%+ compression) |
+| **Robustness** | "How many things must break for the prediction to flip?" |
+| **Counterfactual** | "What if this factor didn't exist?" |
+| **KL Divergence** | "Do forward and inverted views agree?" |
+
+### Agent Verification (optional, requires LLM API)
+
+After math inversion, 4 adversarial agents debate each finding:
+- **Prosecutor**: tries to disprove
+- **Defender**: provides evidence
+- **Devil's Advocate**: finds edge cases  
+- **Judge**: scores survival (0-1)
+
+Findings that survive → confidence boosted. Killed → DAG probabilities adjusted → re-inversion. Loop until convergence.
+
+### Quick Start
+
+```bash
+# Math core only (no API key needed)
+cd backend/test_inversion
+python test_true_inversion.py
+
+# API endpoint
+curl -X POST http://localhost:5001/api/inversion \
+  -H "Content-Type: application/json" \
+  -d '{"nodes": [...], "edges": [...]}'
+```
+
+### Inspired By
+
+Christopher Nolan's **Tenet** — temporal pincer movement.  
+*"What's happened, happened. But what had to be true?"*
